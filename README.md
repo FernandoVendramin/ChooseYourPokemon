@@ -1,8 +1,8 @@
 # ChooseYourPokemon
 Projeto criado para demonstrar o fluxo de pipelines em diferentes plataformas na nuvem;
 
-O App È bem simples, consiste apenas em duas telas. A primeira tela exibida ser· uma tela de boas vindas, com dois botıes: "Escolher meu pokemon" e "N„o quero pokemon". As duas aÁıes tem o objetivo de gerar logs para serem visualizados nas plataformas utilizadas na demonstraÁ„o.
+O App √© bem simples, consiste apenas em duas telas. A primeira tela exibida ser√° uma tela de boas vindas, com dois bot√µes: "Escolher meu pokemon" e "N√£o quero pokemon". As duas a√ß√µes tem o objetivo de gerar logs para serem visualizados nas plataformas utilizadas na demonstra√ß√£o.
 
-![App Image 1](https://github.com/FernandoVendramin/ChooseYourPokemon/blob/develop/img1.jpg?raw=true)
-![App Image 2](https://github.com/FernandoVendramin/ChooseYourPokemon/blob/develop/img1.jpg?raw=true)
-![App Image 3](https://github.com/FernandoVendramin/ChooseYourPokemon/blob/develop/img1.jpg?raw=true)
+![App Image 1](https://github.com/FernandoVendramin/ChooseYourPokemon/docs/develop/img1.jpg?raw=true)
+![App Image 2](https://github.com/FernandoVendramin/ChooseYourPokemon/docs/develop/img1.jpg?raw=true)
+![App Image 3](https://github.com/FernandoVendramin/ChooseYourPokemon/docs/develop/img1.jpg?raw=true)
