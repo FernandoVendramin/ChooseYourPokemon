@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ChooseYourPokemon.MainPage">
+
+    <StackLayout Spacing="0">
+        <Frame BackgroundColor="#FF0000" Padding="0,10" CornerRadius="0">
+            <StackLayout Margin="0" Padding="0">
+                <Label AutomationId="MainPageTitle" Text="Laboratorio " FontSize="15" HorizontalTextAlignment="Center" TextColor="#FFDE00" />
+                <Image Source="pokemonlogo.png" Margin="70,0"/>
+            </StackLayout>
+            
+            
+        </Frame>
+        <StackLayout VerticalOptions="FillAndExpand" Margin="0" BackgroundColor="{Binding SelectedBackground}">
+            <StackLayout VerticalOptions="CenterAndExpand">
+                
+                <Image Source="{Binding Selected}" WidthRequest="250" HeightRequest="250"/>
+                <Label AutomationId="lblPokemon"  Text="{Binding SelectedText}" FontSize="12" FontFamily="earlygame" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="0,-40,0,0" TextColor="White" />
+                <Label Text="{Binding SelectedName}" FontSize="16" FontFamily="earlygame" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="0,30,0,0" TextColor="White" />
+            </StackLayout>
+        </StackLayout>
+        <StackLayout VerticalOptions="End" BackgroundColor="#CFCFCF">
+            <Button AutomationId="btnChoosePokemon" HorizontalOptions="FillAndExpand" Margin="25,25,25,0" BorderColor="#3B4CCA" BorderWidth="1" TextColor="White" BackgroundColor="#3B4CCA" Text="Escolher meu pokemon" Command="{Binding SelectPokemonCommand}" />
+            <Button AutomationId="btnClearPokemon" HorizontalOptions="FillAndExpand" Margin="25,0,25,25" BorderColor="White" BorderWidth="1" TextColor="Black" BackgroundColor="White" Text="Não quero pokemon" Command="{Binding ClearPokemonCommand}" />
+        </StackLayout>
+    </StackLayout>
+
+</ContentPage>

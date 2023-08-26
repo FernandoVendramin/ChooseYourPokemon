@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ChooseYourPokemon.App">
+    <Application.Resources>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="FontFamily" Value="earlygame" />
+            <Setter Property="FontSize" Value="Default" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="FontFamily" Value="earlygame" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+    </Application.Resources>
+</Application>

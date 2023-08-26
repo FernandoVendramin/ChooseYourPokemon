@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2149E57A-756F-4686-BC6A-B19E3C10D6B5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ChooseYourPokemon.UITest</RootNamespace>
+    <AssemblyName>ChooseYourPokemon.UITest</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="SpecFlow">
+      <Version>3.5.14</Version>
+    </PackageReference>
+    <PackageReference Include="SpecFlow.NUnit">
+      <Version>3.5.14</Version>
+    </PackageReference>
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
+      <Version>3.5.5</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.UITest" Version="3.2.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MainPageRequirements.feature" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\Global.cs" />
+    <Compile Include="PartialRequirementsSteps.cs" />
+    <Compile Include="Base\SetupSteps.cs" />
+    <Compile Include="AppInitializer.cs" />
+    <Compile Include="MainPageRequirementsSteps.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
