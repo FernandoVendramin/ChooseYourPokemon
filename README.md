@@ -5,8 +5,6 @@ O App é bem simples, consiste apenas em duas telas. A primeira tela exibida ser
 
 As duas ações tem como objetivo gerar logs para serem visualizados nas plataformas utilizadas na demonstração.
 
-<center>
-<img src="https://github.com/FernandoVendramin/ChooseYourPokemon/blob/develop/docs/img1.jpg?raw=true" width="250">
-<img src="https://github.com/FernandoVendramin/ChooseYourPokemon/blob/develop/docs/img2.jpg?raw=true" width="250">
-<img src="https://github.com/FernandoVendramin/ChooseYourPokemon/blob/develop/docs/img3.jpg?raw=true" width="250">
-</center>
+Boas Vindas                | Selecione um Pokemon      | Pokemon Selecionado       | Não quero Pokemon
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+<img src="https://github.com/FernandoVendramin/ChooseYourPokemon/blob/develop/docs/img1.jpg?raw=true" width="250"> | <img src="https://github.com/FernandoVendramin/ChooseYourPokemon/blob/develop/docs/img2.jpg?raw=true" width="250"> | <img src="https://github.com/FernandoVendramin/ChooseYourPokemon/blob/develop/docs/img3.jpg?raw=true" width="250"> | <img src="https://github.com/FernandoVendramin/ChooseYourPokemon/blob/develop/docs/img4.jpg?raw=true" width="250">
