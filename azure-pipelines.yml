@@ -38,7 +38,7 @@ steps:
   displayName: 'Signing and aligning'
   inputs:
     apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.aab'
-    apksignerKeystoreFile: 'PokeDextra.keystore'
+    apksignerKeystoreFile: 'ChooseYouPokemon.keystore'
     apksignerKeystorePassword: '$(key_password)'
     apksignerKeystoreAlias: '$(key_alias)'
     apksignerKeyPassword: '$(key_password)'
