@@ -48,7 +48,6 @@
     <Compile Include="Base\Global.cs" />
     <Compile Include="PartialRequirementsSteps.cs" />
     <Compile Include="Base\SetupSteps.cs" />
-    <Compile Include="AppInitializer.cs" />
     <Compile Include="MainPageRequirementsSteps.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

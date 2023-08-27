@@ -137,15 +137,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\Dextra.TDC.PokeDextra\ChooseYourPokemon.csproj">
-      <Project>{03239844-C26F-48E0-BA2A-CD80290B5857}</Project>
-      <Name>ChooseYourPokemon</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BundleResource Include="Resources\pokebola.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChooseYourPokemon\ChooseYourPokemon.csproj">
+      <Project>{189c1533-219c-4e64-a0ae-71fc9e4cc972}</Project>
+      <Name>ChooseYourPokemon</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

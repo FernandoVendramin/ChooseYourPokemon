@@ -17,7 +17,7 @@ namespace ChooseYourPokemon.UITest.Base
             {
                 Global.App = ConfigureApp
                     .Android
-                    .InstalledApp("com.ChooseYourPokemon")
+                    .InstalledApp("com.chooseyourpokemon")
                     .PreferIdeSettings()
                     .EnableLocalScreenshots()
                     .StartApp();
