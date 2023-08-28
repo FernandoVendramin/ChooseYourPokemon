@@ -24,7 +24,7 @@ namespace ChooseYourPokemon
 
         protected override void OnStart()
         {
-            AppCenter.Start("android=ad682f24-01a8-4b7d-a793-c14b1d1da3b4;", typeof(Analytics), typeof(Crashes));
+            AppCenter.Start("android=2e107822-edee-4f2a-b61a-989777e8641a;", typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("App iniciado", _logParams);
         }
 
