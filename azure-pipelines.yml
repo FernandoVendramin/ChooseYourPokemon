@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- develop
+- master
 
 pool:
   vmImage: windows-latest
@@ -13,9 +13,10 @@ variables:
   buildConfiguration: 'Release'
   outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
 
+
 stages:
 
-  - stage:
+  - stage: Build
     displayName: Build Application
     jobs:
       - job:
@@ -54,8 +55,9 @@ stages:
             PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
             ArtifactName: 'android-artifact'
 
-  - stage:
+  - stage: Test
     displayName: Test Application
+    dependsOn: Build
     jobs:
       - job:
         displayName: Coverage job
@@ -91,36 +93,32 @@ stages:
 
       - job:
         pool: 
-          vmImage: ubuntu-latest
+          vmImage: windows-2022
         displayName: UI Test job
         steps:      
+        - task: NuGetToolInstaller@0
+          displayName: 'Use NuGet 6.x'
+          inputs:
+            versionSpec: 6.x
+        - task: NuGetCommand@2
+          displayName: 'NuGet restore'
+          inputs:
+            restoreSolution: 'src/ChooseYourPokemon.sln'
+            restoreDirectory: '$(System.DefaultWorkingDirectory)/package'
         - task: NodeTool@0
-          enabled: false
           displayName: 'Use Node 10.x.x'
           inputs:
             versionSpec: 10.x.x
-
         - task: MSBuild@1
-          enabled: false
           displayName: 'Build UITest'
           inputs:
             solution: 'src/ChooseYourPokemon.UITest/ChooseYourPokemon.UITest.csproj'
+            msbuildVersion: 17.0
             msbuildArchitecture: x64
             configuration: '$(BuildConfiguration)'
-            msbuildArguments: '/p:OutputPath=$(build.binariesdirectory)/uitests'
-
-        - task: AppCenterTest@1
-          enabled: false
-          displayName: 'Test with Visual Studio App Center'
+            msbuildArguments: '/p:OutputPath=$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Artifact: uitest-artifact'
           inputs:
-            appFile: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.aab'
-            artifactsDirectory: '$(Build.ArtifactStagingDirectory)/AppCenterTest'
-            frameworkOption: 'uitest'
-            uiTestBuildDirectory: '$(build.binariesdirectory)/uitests'
-            uiTestToolsDirectory: '$(build.binariesdirectory)/uitests'
-            credentialsOption: 'serviceEndpoint'
-            serverEndpoint: 'AppCenterApiToken'
-            appSlug: 'Anima-Tech-Week/Lab-Pokemon'
-            devices: 'Anima-Tech-Week/validate-max-min'
-            series: 'Demos'
-            localeOption: 'en_US'
+            PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
+            ArtifactName: 'ui-test-artifact'
