@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- develop
 
 pool:
   vmImage: windows-latest
@@ -12,7 +12,6 @@ pool:
 variables:
   buildConfiguration: 'Release'
   outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
-
 
 stages:
 
@@ -23,18 +22,15 @@ stages:
         displayName: build job
         steps:  
         - task: NuGetToolInstaller@0
-          enabled: false
           displayName: 'Use NuGet 6.x'
           inputs:
             versionSpec: 6.x
         - task: NuGetCommand@2
-          enabled: false
           displayName: 'NuGet restore'
           inputs:
             restoreSolution: 'src/ChooseYourPokemon.sln'
             restoreDirectory: '$(System.DefaultWorkingDirectory)/package'
         - task: XamarinAndroid@1
-          enabled: false
           displayName: 'Build Xamarin.Android'
           inputs:
             projectFile: 'src/app/ChooseYourPokemon.Android/ChooseYourPokemon.Android.csproj'
@@ -44,7 +40,6 @@ stages:
             msbuildArchitectureOption: 'x64'
             jdkVersionOption: 1.11
         - task: AndroidSigning@3
-          enabled: false
           displayName: 'Signing and aligning'
           inputs:
             apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.aab'
@@ -54,7 +49,6 @@ stages:
             apksignerKeyPassword: '$(key_password)'
             apksignerArguments: '--verbose  --min-sdk-version 21'  
         - task: PublishBuildArtifacts@1
-          enabled: false
           displayName: 'Publish Artifact: android-artifact'
           inputs:
             PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
