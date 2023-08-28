@@ -104,7 +104,7 @@ stages:
           displayName: 'NuGet restore'
           inputs:
             restoreSolution: 'src/ChooseYourPokemon.sln'
-            restoreDirectory: '$(System.DefaultWorkingDirectory)/package'
+            restoreDirectory: '$(Build.ArtifactStagingDirectory)/package'
         - task: NodeTool@0
           displayName: 'Use Node 10.x.x'
           inputs:
