@@ -43,7 +43,7 @@ stages:
         - task: AndroidSigning@3
           displayName: 'Signing and aligning'
           inputs:
-            apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.aab'
+            apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.apk'
             apksignerKeystoreFile: 'ChooseYouPokemon.keystore'
             apksignerKeystorePassword: '$(key_password)'
             apksignerKeystoreAlias: '$(key_alias)'
