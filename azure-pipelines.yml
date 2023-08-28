@@ -4,86 +4,124 @@
 # https://aka.ms/yaml
 
 trigger:
-- develop
+- main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: windows-latest
+
 variables:
   buildConfiguration: 'Release'
   outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
 
-steps:
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 5.x'
-  inputs:
-    versionSpec: 5.x
 
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  inputs:
-    restoreSolution: 'src/ChooseYourPokemon.sln'
-    restoreDirectory: '$(System.DefaultWorkingDirectory)/package'
+stages:
 
-- task: XamarinAndroid@1
-  displayName: 'Build Xamarin.Android'
-  inputs:
-    projectFile: 'src/app/ChooseYourPokemon.Android/ChooseYourPokemon.Android.csproj'
-    outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
-    configuration: '$(BuildConfiguration)'
-    msbuildVersionOption: '16.0'
-    msbuildArchitectureOption: 'x64'
-    jdkOption: 'JDKVersion'
+  - stage:
+    displayName: Build Application
+    jobs:
+      - job:
+        displayName: build job
+        steps:  
+        - task: NuGetToolInstaller@0
+          displayName: 'Use NuGet 6.x'
+          inputs:
+            versionSpec: 6.x
+        - task: NuGetCommand@2
+          displayName: 'NuGet restore'
+          inputs:
+            restoreSolution: 'src/ChooseYourPokemon.sln'
+            restoreDirectory: '$(System.DefaultWorkingDirectory)/package'
+        - task: XamarinAndroid@1
+          displayName: 'Build Xamarin.Android'
+          inputs:
+            projectFile: 'src/app/ChooseYourPokemon.Android/ChooseYourPokemon.Android.csproj'
+            outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
+            configuration: '$(BuildConfiguration)'
+            msbuildVersionOption: latest
+            msbuildArchitectureOption: 'x64'
+            jdkVersionOption: 1.11
+        - task: AndroidSigning@3
+          displayName: 'Signing and aligning'
+          inputs:
+            apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.aab'
+            apksignerKeystoreFile: 'ChooseYouPokemon.keystore'
+            apksignerKeystorePassword: '$(key_password)'
+            apksignerKeystoreAlias: '$(key_alias)'
+            apksignerKeyPassword: '$(key_password)'
+            apksignerArguments: '--verbose  --min-sdk-version 21'  
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Artifact: android-artifact'
+          inputs:
+            PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
+            ArtifactName: 'android-artifact'
 
-- task: AndroidSigning@3
-  displayName: 'Signing and aligning'
-  inputs:
-    apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.aab'
-    apksignerKeystoreFile: 'ChooseYouPokemon.keystore'
-    apksignerKeystorePassword: '$(key_password)'
-    apksignerKeystoreAlias: '$(key_alias)'
-    apksignerKeyPassword: '$(key_password)'
-    apksignerArguments: '--verbose  --min-sdk-version 21'
+  - stage:
+    displayName: Test Application
+    jobs:
+      - job:
+        displayName: Coverage job
+        steps:  
+        - task: UseDotNet@2
+          displayName: 'Use .Net 7'
+          inputs:
+            packageType: 'sdk'
+            version: '7.0.x'    
+        - task: SonarCloudPrepare@1
+          inputs:
+            SonarCloud: 'Sonar Demo'
+            organization: 'fagnerdemos'
+            scannerMode: 'MSBuild'
+            projectKey: 'fagnerdemos_anima-tech-week'
+            projectName: 'Anima Tech Week'    
+        - task: DotNetCoreCLI@2
+          displayName: 'Build Xamarin Core'
+          inputs:
+            command: 'build'
+            projects: 'src/app/ChooseYourPokemon/ChooseYourPokemon.csproj'
+        - task: DotNetCoreCLI@2
+          displayName: 'Unit Test'
+          inputs:
+            command: test
+            projects: 'src/ChooseYourPokemon.UnitTest/ChooseYourPokemon.UnitTest.csproj'      
+        - task: SonarCloudAnalyze@1
+          inputs:
+            jdkversion: 'JAVA_HOME_11_X64'
+        - task: SonarCloudPublish@1
+          inputs:
+            pollingTimeoutSec: '300'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Unit Test'
-  inputs:
-    command: test
-    projects: 'src/ChooseYourPokemon.UnitTest/ChooseYourPokemon.UnitTest.csproj'
+      - job:
+        pool: 
+          vmImage: ubuntu-latest
+        displayName: UI Test job
+        steps:      
+        - task: NodeTool@0
+          enabled: false
+          displayName: 'Use Node 10.x.x'
+          inputs:
+            versionSpec: 10.x.x
 
-- task: NodeTool@0
-  enabled: false
-  displayName: 'Use Node 10.x.x'
-  inputs:
-    versionSpec: 10.x.x
+        - task: MSBuild@1
+          enabled: false
+          displayName: 'Build UITest'
+          inputs:
+            solution: 'src/ChooseYourPokemon.UITest/ChooseYourPokemon.UITest.csproj'
+            msbuildArchitecture: x64
+            configuration: '$(BuildConfiguration)'
+            msbuildArguments: '/p:OutputPath=$(build.binariesdirectory)/uitests'
 
-- task: MSBuild@1
-  enabled: false
-  displayName: 'Build UITest'
-  inputs:
-    solution: 'src/ChooseYourPokemon.UITest/ChooseYourPokemon.UITest.csproj'
-    msbuildArchitecture: x64
-    configuration: '$(BuildConfiguration)'
-    msbuildArguments: '/p:OutputPath=$(build.binariesdirectory)/uitests'
-
-- task: AppCenterTest@1
-  enabled: false
-  displayName: 'Test with Visual Studio App Center'
-  inputs:
-    appFile: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.aab'
-    artifactsDirectory: '$(Build.ArtifactStagingDirectory)/AppCenterTest'
-    frameworkOption: 'uitest'
-    uiTestBuildDirectory: '$(build.binariesdirectory)/uitests'
-    uiTestToolsDirectory: '$(build.binariesdirectory)/uitests'
-    credentialsOption: 'serviceEndpoint'
-    serverEndpoint: 'AppCenterApiToken'
-    appSlug: 'Anima-Tech-Week/Lab-Pokemon'
-    devices: 'Anima-Tech-Week/validate-max-min'
-    series: 'Demos'
-    localeOption: 'en_US'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: android-artifact'
-  inputs:
-    PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
-    ArtifactName: 'android-artifact'
-  condition: succeededOrFailed()
+        - task: AppCenterTest@1
+          enabled: false
+          displayName: 'Test with Visual Studio App Center'
+          inputs:
+            appFile: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.aab'
+            artifactsDirectory: '$(Build.ArtifactStagingDirectory)/AppCenterTest'
+            frameworkOption: 'uitest'
+            uiTestBuildDirectory: '$(build.binariesdirectory)/uitests'
+            uiTestToolsDirectory: '$(build.binariesdirectory)/uitests'
+            credentialsOption: 'serviceEndpoint'
+            serverEndpoint: 'AppCenterApiToken'
+            appSlug: 'Anima-Tech-Week/Lab-Pokemon'
+            devices: 'Anima-Tech-Week/validate-max-min'
+            series: 'Demos'
+            localeOption: 'en_US'
