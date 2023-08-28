@@ -117,6 +117,11 @@ stages:
             msbuildArchitecture: x64
             configuration: '$(BuildConfiguration)'
             msbuildArguments: '/p:OutputPath=$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
+        - task: CopyFiles@2
+          inputs:
+            SourceFolder: '$(System.DefaultWorkingDirectory)/package/xamarin.uitest/3.2.2'
+            Contents: '**'
+            TargetFolder: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
         - task: PublishBuildArtifacts@1
           displayName: 'Publish Artifact: uitest-artifact'
           inputs:
