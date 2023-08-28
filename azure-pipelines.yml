@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+- master
 
 pool:
   vmImage: windows-latest
@@ -16,7 +16,7 @@ variables:
 
 stages:
 
-  - stage:
+  - stage: Build
     displayName: Build Application
     jobs:
       - job:
@@ -55,8 +55,9 @@ stages:
             PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput'
             ArtifactName: 'android-artifact'
 
-  - stage:
+  - stage: Test
     displayName: Test Application
+    dependsOn: Build
     jobs:
       - job:
         displayName: Coverage job
@@ -115,18 +116,9 @@ stages:
             msbuildVersion: 17.0
             msbuildArchitecture: x64
             configuration: '$(BuildConfiguration)'
-            msbuildArguments: '/p:OutputPath=$(build.binariesdirectory)/uitests'
-        - task: AppCenterTest@1
-          displayName: 'Test with Visual Studio App Center'
+            msbuildArguments: '/p:OutputPath=$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Artifact: uitest-artifact'
           inputs:
-            appFile: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.aab'
-            artifactsDirectory: '$(Build.ArtifactStagingDirectory)/AppCenterTest'
-            frameworkOption: 'uitest'
-            uiTestBuildDirectory: '$(build.binariesdirectory)/uitests'
-            uiTestToolsDirectory: '$(System.DefaultWorkingDirectory)/package/xamarin.uitest/3.2.2/tools'
-            credentialsOption: 'serviceEndpoint'
-            serverEndpoint: 'app center account'
-            appSlug: 'Anima-Tech-Week/Lab-Pokemon'
-            devices: 'Anima-Tech-Week/validate-max-min'
-            series: 'demos'
-            localeOption: 'en_US'
+            PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
+            ArtifactName: 'ui-test-artifact'
