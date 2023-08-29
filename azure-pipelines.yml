@@ -95,7 +95,9 @@ stages:
         pool: 
           vmImage: windows-2022
         displayName: UI Test job
-        steps:      
+        steps: 
+        - download: current
+          artifact: android-artifact     
         - task: NuGetToolInstaller@0
           displayName: 'Use NuGet 6.x'
           inputs:
@@ -117,13 +119,17 @@ stages:
             msbuildArchitecture: x64
             configuration: '$(BuildConfiguration)'
             msbuildArguments: '/p:OutputPath=$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
-        - task: CopyFiles@2
+
+        - task: AppCenterTest@1
+          displayName: 'Test with Visual Studio App Center'
           inputs:
-            SourceFolder: '$(System.DefaultWorkingDirectory)/package/xamarin.uitest/3.2.2'
-            Contents: '**'
-            TargetFolder: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
-        - task: PublishBuildArtifacts@1
-          displayName: 'Publish Artifact: uitest-artifact'
-          inputs:
-            PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
-            ArtifactName: 'ui-test-artifact'
+            appFile: '$(Pipeline.Workspace)/android-artifact/com.chooseyourpokemon.apk'
+            artifactsDirectory: AppCenterTest
+            frameworkOption: uitest
+            uiTestBuildDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
+            uiTestToolsDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
+            prepareOptions: '--debug'
+            serverEndpoint: 'app center account'
+            appSlug: 'Anima-Tech-Week/Lab-Pokemon'
+            devices: 'Anima-Tech-Week/validate-max-min'
+            series: demos
