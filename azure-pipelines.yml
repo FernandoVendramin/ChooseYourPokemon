@@ -120,8 +120,14 @@ stages:
             configuration: '$(BuildConfiguration)'
             msbuildArguments: '/p:OutputPath=$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
 
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Artifact: uitest-artifact'
+          inputs:
+            PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
+            ArtifactName: 'ui-test-artifact'
         - task: AppCenterTest@1
           displayName: 'Test with Visual Studio App Center'
+          enabled: false
           inputs:
             appFile: '$(Pipeline.Workspace)/android-artifact/com.chooseyourpokemon.apk'
             artifactsDirectory: '$(Build.ArtifactStagingDirectory)/AppCenterTest'
