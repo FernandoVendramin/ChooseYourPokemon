@@ -43,7 +43,7 @@ stages:
         - task: AndroidSigning@3
           displayName: 'Signing and aligning'
           inputs:
-            apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.apk'
+            apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/AndroidOutput/*.aab'
             apksignerKeystoreFile: 'ChooseYouPokemon.keystore'
             apksignerKeystorePassword: '$(key_password)'
             apksignerKeystoreAlias: '$(key_alias)'
@@ -127,9 +127,9 @@ stages:
             ArtifactName: 'ui-test-artifact'
         - task: AppCenterTest@1
           displayName: 'Test with Visual Studio App Center'
-          enabled: true
+          enabled: false
           inputs:
-            appFile: '$(Pipeline.Workspace)/android-artifact/com.chooseyourpokemon.apk'
+            appFile: '$(Pipeline.Workspace)/android-artifact/com.chooseyourpokemon.aab'
             artifactsDirectory: '$(Build.ArtifactStagingDirectory)/AppCenterTest'
             frameworkOption: 'uitest'
             uiTestBuildDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput/'
