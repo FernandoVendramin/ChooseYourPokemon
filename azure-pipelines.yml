@@ -86,7 +86,7 @@ stages:
             projects: 'src/ChooseYourPokemon.UnitTest/ChooseYourPokemon.UnitTest.csproj'      
         - task: SonarCloudAnalyze@1
           inputs:
-            jdkversion: 'JAVA_HOME_11_X64'
+            jdkversion: 'JAVA_HOME_17_X64'
         - task: SonarCloudPublish@1
           inputs:
             pollingTimeoutSec: '300'
