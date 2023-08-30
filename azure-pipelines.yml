@@ -127,13 +127,13 @@ stages:
             ArtifactName: 'ui-test-artifact'
         - task: AppCenterTest@1
           displayName: 'Test with Visual Studio App Center'
-          enabled: false
+          enabled: true
           inputs:
             appFile: '$(Pipeline.Workspace)/android-artifact/com.chooseyourpokemon.apk'
             artifactsDirectory: '$(Build.ArtifactStagingDirectory)/AppCenterTest'
             frameworkOption: 'uitest'
-            uiTestBuildDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
-            uiTestToolsDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
+            uiTestBuildDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput/'
+            uiTestToolsDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput/'
             prepareOptions: '--debug'
             credentialsOption: 'serviceEndpoint'
             serverEndpoint: 'app center account'
