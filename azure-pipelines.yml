@@ -124,12 +124,14 @@ stages:
           displayName: 'Test with Visual Studio App Center'
           inputs:
             appFile: '$(Pipeline.Workspace)/android-artifact/com.chooseyourpokemon.apk'
-            artifactsDirectory: AppCenterTest
-            frameworkOption: uitest
+            artifactsDirectory: '$(Build.ArtifactStagingDirectory)/AppCenterTest'
+            frameworkOption: 'uitest'
             uiTestBuildDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
             uiTestToolsDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)/TestdOutput'
             prepareOptions: '--debug'
+            credentialsOption: 'serviceEndpoint'
             serverEndpoint: 'app center account'
             appSlug: 'Anima-Tech-Week/Lab-Pokemon'
             devices: 'Anima-Tech-Week/validate-max-min'
-            series: demos
+            series: 'demos'
+            localeOption: 'en_US'
